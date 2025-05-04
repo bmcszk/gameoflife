@@ -18,9 +18,15 @@ A Go implementation of Conway's Game of Life with a console-based user interface
 
 ## Installation
 
-1. Clone the repository:
+1. Clone the repository (using SSH):
 ```bash
-git clone https://github.com/yourusername/gameoflife.git
+git clone git@github.com:bmcszk/gameoflife.git
+cd gameoflife
+```
+
+Or using HTTPS:
+```bash
+git clone https://github.com/bmcszk/gameoflife.git
 cd gameoflife
 ```
 
@@ -94,7 +100,7 @@ Zero memory allocations during generation computation.
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contributing
 
