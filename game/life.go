@@ -7,7 +7,7 @@ const (
 
 // Game represents the state of the Game of Life
 type Game struct {
-	grids      [2][GridHeight][GridWidth]bool
+	grids      [2][GridHeight][GridWidth]bool // this improved performance, no memory allocation for each generation
 	activeGrid int
 	generation int
 }
@@ -53,6 +53,7 @@ func (g *Game) Clear() {
 }
 
 // NextGeneration computes the next state of the game
+// TODO: for better performance, we can detect cycles in the generations computing, and cache them for later use.
 func (g *Game) NextGeneration() {
 	nextGrid := 1 - g.activeGrid // Toggle between 0 and 1
 
