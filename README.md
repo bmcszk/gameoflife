@@ -5,12 +5,12 @@ A Go implementation of Conway's Game of Life with a console-based user interface
 ## Features
 
 - 25x25 grid with wrapping edges
-- Double-buffered grid implementation for optimal performance
-- Glider pattern initialization
-- Generation counter
-- Efficient computation of multiple generations
+- Immutable design for better predictability and thread safety
+- Zero memory allocations during game evolution
+- Efficient fixed-size array implementation
+- Simple console UI with Unicode block characters
 - Comprehensive test suite
-- Benchmark tests
+- Built-in glider pattern initialization
 
 ## Requirements
 
@@ -75,12 +75,27 @@ make test-all
 
 ## Implementation Details
 
-### Grid Implementation
+### Immutable Design
 
-The game uses a double-buffered grid implementation for optimal performance:
-- Two 25x25 boolean arrays are used alternately
-- No memory allocations during generation computation
-- Wrapping edges for continuous simulation
+The game uses an immutable design where each state change returns a new `Game` instance. This approach:
+- Makes state transitions explicit and predictable
+- Eliminates the need for synchronization in concurrent scenarios
+- Simplifies testing and reasoning about the code
+- Keeps the core game logic pure and focused
+
+### Data Structures
+
+- Fixed-size arrays for the grid to avoid memory allocations
+- Simple struct with just the essential game state
+- No generation counter in the core game logic (handled by UI layer)
+
+### Game Rules
+
+The implementation follows Conway's Game of Life rules:
+1. Any live cell with fewer than two live neighbors dies (underpopulation)
+2. Any live cell with two or three live neighbors lives
+3. Any live cell with more than three live neighbors dies (overpopulation)
+4. Any dead cell with exactly three live neighbors becomes a live cell (reproduction)
 
 ### Patterns
 
@@ -92,9 +107,9 @@ The implementation includes several test patterns:
 ### Performance
 
 Benchmark results (on Intel Core i5-8365U):
-- 10 generations: ~191,021 ns/op
-- 100 generations: ~1,948,836 ns/op
-- 1000 generations: ~19,087,484 ns/op
+- 10 generations: ~245,041 ns/op
+- 100 generations: ~2,434,309 ns/op
+- 1000 generations: ~24,220,062 ns/op
 
 Zero memory allocations during generation computation.
 

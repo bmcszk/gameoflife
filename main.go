@@ -15,8 +15,8 @@ func clearScreen() {
 	cmd.Run()
 }
 
-func printGrid(g *game.Game) {
-	fmt.Printf("Generation: %d\n\n", g.GetGeneration())
+func printGrid(g game.Game, generation int) {
+	fmt.Printf("Generation: %d\n\n", generation)
 	for y := 0; y < game.GridHeight; y++ {
 		for x := 0; x < game.GridWidth; x++ {
 			if g.GetCell(x, y) {
@@ -29,30 +29,34 @@ func printGrid(g *game.Game) {
 	}
 }
 
-func initializeGlider(g *game.Game) {
-	g.Clear()
+func initializeGlider(g game.Game) game.Game {
+	g = g.Clear()
 
 	// Place the glider in the middle
 	centerX, centerY := game.GridWidth/2, game.GridHeight/2
 
 	// Glider pattern
-	g.SetCell(centerX, centerY-1, true)
-	g.SetCell(centerX+1, centerY, true)
-	g.SetCell(centerX-1, centerY+1, true)
-	g.SetCell(centerX, centerY+1, true)
-	g.SetCell(centerX+1, centerY+1, true)
+	g = g.SetCell(centerX, centerY-1, true)
+	g = g.SetCell(centerX+1, centerY, true)
+	g = g.SetCell(centerX-1, centerY+1, true)
+	g = g.SetCell(centerX, centerY+1, true)
+	g = g.SetCell(centerX+1, centerY+1, true)
+
+	return g
 }
 
 func main() {
 	// Create a new game
 	g := game.NewGame()
-	initializeGlider(g)
+	g = initializeGlider(g)
+	generation := 0
 
 	// Run the game loop
 	for {
 		clearScreen()
-		printGrid(g)
-		g.NextGeneration()
+		printGrid(g, generation)
+		g = g.NextGeneration()
+		generation++
 		time.Sleep(100 * time.Millisecond)
 	}
 }
